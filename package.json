@@ -20,7 +20,8 @@
     "categories": [
         "Languages",
         "Snippets",
-        "Linters"
+        "Linters",
+        "Debuggers"
     ],
     "activationEvents": [
         "onCommand:language-julia.openPackageDirectory",
@@ -90,7 +91,35 @@
                     "description": "Points to the julia executable."
                 }
             }
+        },
+        "debuggers": [{
+            "type": "julia",
+            "label": "julia debugger",
+            "program": "./scripts/debugadapter/run.bat",
+            "configurationAttributes": {
+				"launch": {
+					"required": ["script"],
+					"properties": {
+						"script": {
+							"type": "string",
+							"description": "Workspace relative path to a julia file.",
+							"default": "${workspaceRoot}/main.jl"
+						}
+					}
+				}
+			},
+
+			"initialConfigurations": [
+				{
+					"name": "julia",
+					"type": "julia",
+					"request": "launch",
+					"program": "main.jl"
+				}
+			]
         }
+            
+        ]
     },
     "scripts": {
         "vscode:prepublish": "tsc -p ./",
