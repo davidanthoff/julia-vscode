@@ -103,18 +103,17 @@
 						"script": {
 							"type": "string",
 							"description": "Workspace relative path to a julia file.",
-							"default": "${workspaceRoot}/main.jl"
+							"default": "${file}"
 						}
 					}
 				}
 			},
-
 			"initialConfigurations": [
 				{
 					"name": "julia",
 					"type": "julia",
 					"request": "launch",
-					"program": "main.jl"
+					"script": "${file}"
 				}
 			]
         }
