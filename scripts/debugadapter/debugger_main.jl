@@ -22,6 +22,7 @@ open("C:\\Users\\david\\source\\julia-vscode\\scripts\\debugadapter\\logging.txt
     println(f, msg)
     msg_json = JSON.parse(msg)
     msg_json["command"] == "launch" || error()
+    script_path = msg_json["arguments"]["script"]
     if msg_json["arguments"]["noDebug"]==true
         rsp = Dict()
         rsp["seq"] = msg_json["seq"]
@@ -44,15 +45,17 @@ open("C:\\Users\\david\\source\\julia-vscode\\scripts\\debugadapter\\logging.txt
         write_transport_layer(STDOUT, JSON.json(rsp))
     end
 
+    # p = spawn(detach(Cmd(`$(Base.julia_cmd()) -- $script_path`, windows_hide=false, detach=true)))
+
     msg = Dict()
     msg["command"] = "runInTerminal"
     msg["type"] = "request"
     msg["seq"] = 3
     msg["arguments"] = Dict()
-    msg["arguments"]["kind"] = "external"
+    msg["arguments"]["kind"] = "integrated" #"external"
     msg["arguments"]["title"] = "something cool"
-    msg["arguments"]["cwd"] = "c:\\"
-    msg["arguments"]["args"] = ["C:\\Users\\david\\AppData\\Local\\julia-0.5\\bin\\julia.exe"]
+    msg["arguments"]["cwd"] = dirname(script_path)
+    msg["arguments"]["args"] = [joinpath(JULIA_HOME,Base.julia_exename()), script_path]
     write_transport_layer(STDOUT, JSON.json(msg))
     
     msg = read_transport_layer(STDIN)
