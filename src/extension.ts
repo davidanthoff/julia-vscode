@@ -21,6 +21,14 @@ let testOutputChannel: vscode.OutputChannel = null;
 let testChildProcess: ChildProcess = null;
 let testStatusBarItem: vscode.StatusBarItem = null;
 
+function startedInDebugMode(): boolean {
+    let args: string[] = (process as any).execArgv;
+    if (args) {
+        return args.some((arg) => /^--debug=?/.test(arg) || /^--debug-brk=?/.test(arg));
+    };
+    return false;
+}
+
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
@@ -92,7 +100,7 @@ function configChanged(params) {
     }
 }
 
-function loadConfiguration() {
+async function loadConfiguration() {
     let oldValue = juliaExecutable;
 
     let section = vscode.workspace.getConfiguration('julia');
@@ -106,6 +114,11 @@ function loadConfiguration() {
     if(juliaExecutable != oldValue) {
         juliaPackagePath = null;
     }
+
+    let env_set = startedInDebugMode() ? '' : 'SET JULIA_PKGDIR=' + path.join(extensionPath, 'scripts', 'languageserver', 'julia_pkgdir') + '\r\n';
+
+    await fs.writeTextFile(extensionPath + '/scripts/debugadapter/run.bat', '@echo off\r\n' + env_set + juliaExecutable + ' --startup-file=no --history-file=no ' + extensionPath + '/scripts/debugadapter/debugger_main.jl', "ascii", "w"); 
+
     return juliaExecutable != oldValue
 }
 

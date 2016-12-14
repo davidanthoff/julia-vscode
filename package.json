@@ -28,7 +28,8 @@
         "onCommand:language-julia.startREPL",
         "onCommand:language-julia.executeJuliaCodeInREPL",
         "onCommand:language-julia.runTests",
-        "onLanguage:julia"
+        "onLanguage:julia",
+        "onDebug:julia"
     ],
     "main": "./out/src/extension",
     "contributes": {
