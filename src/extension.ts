@@ -694,7 +694,7 @@ async function getJuliaTasks(): Promise<vscode.Task[]> {
         if (await fs.exists(path.join(workspaceRoot, 'test', 'runtests.jl'))) {
             let testTask = new vscode.Task({ type: 'julia', command: 'test' }, `Run tests`, 'julia', new vscode.ProcessExecution(juliaExecutable, ['--color=yes', '-e', 'Pkg.test(Base.ARGS[1])', vscode.workspace.rootPath]), "");
             testTask.group = vscode.TaskGroup.Test;
-            testTask.presentationOptions = { echo: false };
+            testTask.presentationOptions = { echo: false, panel: vscode.TaskPanelKind.New };
             result.push(testTask);
         }
 
@@ -703,7 +703,7 @@ async function getJuliaTasks(): Promise<vscode.Task[]> {
             let package_name = splitted_path[splitted_path.length-1];
             let buildTask = new vscode.Task({ type: 'julia', command: 'build'}, `Run build`, 'julia', new vscode.ProcessExecution(juliaExecutable, ['--color=yes', '-e', 'Pkg.build(Base.ARGS[1])', package_name]), "");
             buildTask.group = vscode.TaskGroup.Build;
-            buildTask.presentationOptions = { echo: false };
+            buildTask.presentationOptions = { echo: false, panel: vscode.TaskPanelKind.New };
             result.push(buildTask);
         }
 
@@ -711,14 +711,14 @@ async function getJuliaTasks(): Promise<vscode.Task[]> {
             let splitted_path = vscode.workspace.rootPath.split(path.sep);
             let package_name = splitted_path[splitted_path.length-1];
             let benchmarkTask = new vscode.Task({ type: 'julia', command: 'benchmark'}, `Run benchmark`, 'julia', new vscode.ProcessExecution(juliaExecutable, ['--color=yes', '-e', 'using PkgBenchmark; benchmarkpkg(Base.ARGS[1], promptsave=false, promptoverwrite=false)', package_name]), "");
-            benchmarkTask.presentationOptions = { echo: false };
+            benchmarkTask.presentationOptions = { echo: false, panel: vscode.TaskPanelKind.New };
             result.push(benchmarkTask);
         }
 
         if (await fs.exists(path.join(workspaceRoot, 'docs', 'make.jl'))) {
             let buildTask = new vscode.Task({ type: 'julia', command: 'docbuild'}, `Build documentation`, 'julia', new vscode.ProcessExecution(juliaExecutable, ['--color=yes', '-e', 'include(Base.ARGS[1])', path.join(workspaceRoot, 'docs', 'make.jl')]), "");
             buildTask.group = vscode.TaskGroup.Build;
-            buildTask.presentationOptions = { echo: false };
+            buildTask.presentationOptions = { echo: false, panel: vscode.TaskPanelKind.New };
             result.push(buildTask);
         }
 
