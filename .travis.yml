@@ -21,19 +21,21 @@ before_install:
 install:
 - npm install
 - npm run compile
-- npm install -g vsce
-- vsce package
 
 script:
   - npm test --silent
 
-# deploy:
-#   provider: releases
-#   api_key:
-#     secure: 
-#   file_glob: true
-#   file: "*.vsix"
-#   skip_cleanup: true
-#   on:
-#     repo: JuliaEditorSupport/julia-vscode
-#     tags: true
+before_deploy:
+  - npm install -g vsce
+  - vsce package
+
+deploy:
+  provider: releases
+  api_key:
+    secure: 
+  file_glob: true
+  file: "*.vsix"
+  skip_cleanup: true
+  on:
+    repo: JuliaEditorSupport/julia-vscode
+    tags: true
