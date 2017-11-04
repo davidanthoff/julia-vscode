@@ -231,16 +231,21 @@
             {
                 "command": "language-julia.executeJuliaCodeInREPL",
                 "key": "ctrl+Enter",
-                "when": "editorTextFocus && editorLangId == julia && editorHasSelection"
+                "when": "editorTextFocus && editorLangId == julia"
             },
             {
                 "command": "language-julia.executeJuliaBlockInREPL",
-                "key": "ctrl+Enter",
-                "when": "editorTextFocus && editorLangId == julia && !editorHasSelection"
+                "key": "ctrl+shift+Enter",
+                "when": "editorTextFocus && editorLangId == julia"
             },
             {
                 "command": "language-julia.executeJuliaCodeInREPL",
                 "key": "ctrl+Enter",
+                "when": "editorTextFocus && editorLangId == juliamarkdown"
+            },
+            {
+                "command": "language-julia.executeJuliaBlockInREPL",
+                "key": "ctrl+shift+Enter",
                 "when": "editorTextFocus && editorLangId == juliamarkdown"
             },
             {
